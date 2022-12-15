@@ -1,26 +1,29 @@
 <template>
   <div class="home">
-    <br/>
+    <br />
     <h1>/vue/ vueJS based forum site</h1>
   </div>
-   <input type="text" v-model="search" name="search" placeholder="search thread">
+  <input type="text" v-model="search" name="search" placeholder="search thread">
   <div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body" v-for="forum in forums" :key="forum.id">
-        <h5 class="card-title">{{forum.Title}}</h5>
-        <div><img :src="forum.imageThread" /></div>
-        <p class="card-text">{{forum.Description}}</p>
-        <router-link href="#" class="btn btn-primary" :to="{path:`/thread/${forum.id}`}">view thread</router-link>
-        <br/>
-       ----------------------------------------------------------------
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body" v-for="forum in filteredItems" :key="forum.id">
+          <h5 class="card-title">{{ forum.Title }}</h5>
+          <div><img :src="forum.imageThread" /></div>
+          <p class="card-text">{{ forum.Description }}</p>
+          <router-link href="#" class="btn btn-primary" :to="{ path: `/thread/${forum.id}` }">view thread</router-link>
+          <br />
+          ----------------------------------------------------------------
+        </div>
       </div>
     </div>
   </div>
-  </div>
 </template>
 <style>
-.card {
+.card{
+   margin-top:20px;
+}
+.row {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,7 +54,7 @@ export default {
   },
   methods: {
     async fetchData() {
-      let dataSS = await getDocs(query(forColRef, orderBy('createdOrder') ));
+      let dataSS = await getDocs(query(forColRef, orderBy('createdOrder')));
       let forums = [];
       dataSS.forEach((forum) => {
         let forumData = forum.data();
@@ -68,6 +71,13 @@ export default {
   },
   created() {
     this.fetchData();
+  },
+  computed: { 
+    filteredItems(){
+      return this.forums.filter((item) => {
+          return item.Title.match(this.search)
+      })
+    }
   }
 }
 </script>

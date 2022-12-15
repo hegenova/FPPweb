@@ -1,6 +1,10 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-
+import AddForum from '../views/AddForum.vue'
+import Thread from '../views/Thread.vue'
+import Catalog from '../views/Catalog.vue'
+import Post from '../views/NewPost.vue'
+import ReplyPost from '../views/ReplyPost.vue'
 const routes = [
   {
     path: '/',
@@ -8,12 +12,29 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/catalog',
+    name: 'catalog',
+   component: Catalog
+  },
+  {
+    path: '/AddForum',
+    name: 'addForum',
+    component: AddForum
+  },
+  {
+    path: '/thread/:forumId',
+    name: 'thread',
+    component: Thread
+  },
+  {
+    path: '/thread/newpost/:forumId',
+    name: 'post',
+    component: Post
+  },
+  {
+    path: '/thread/replyPost/:postId',
+    name: 'replypost',
+    component: ReplyPost
   }
 ]
 

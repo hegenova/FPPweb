@@ -1,19 +1,30 @@
 <template>
-  <div class="home">
-    <br/>
-    <h1>/vue/ vueJS based forum site</h1>
+  <div class="newPost" style="margin-top:10px;margin-bottom:20px">
+    <br />
+    <h1 class="title is-1"
+      style="text-align:center; font-family: 'Covered By Your Grace', cursive; color:#1C98F7; font-size:70px">Create Post
+    </h1>
   </div>
-  <form @submit.prevent="createPost">
-  <div class="form-group">
-    <label for="formGroupExampleInput2">Post</label>
-    <input type="text" class="form-control" v-model="postInfo.post" placeholder="post">
-  </div>
-  <div class="mb-3">
-  <label for="formFile" class="form-label">Image</label>
-  <input class="form-control" type="file" id="formFile" @change="onFileChange">
-</div>
-  <button type="submit" class="btn btn-primary">Submit new post</button>
-</form>
+
+  <form class="box" @submit.prevent="createPost" style="width:1000px;position:absolute; left:350px">
+    <div class="field">
+      <label class="label">Post</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Post" v-model="postInfo.post">
+      </div>
+    </div>
+
+    <div class="field">
+      <label  class="label">Image</label>
+      <div class="file">
+        <label for="formFile"  class="file-label">
+          <input class="input" type="file" id="formFile" @change="onFileChange">
+        </label>
+      </div>
+    </div>
+  
+    <button class="button is-primary" style="margin-top:10px;">Submit New Post</button>
+  </form>
 </template>
 
 <script>
@@ -30,37 +41,37 @@ export default {
     return {
       forumId: "",
       image: null,
-      postInfo:  {
-      replyTo: "",
-      threadId: "",
-      post: "",
-      imagepost: "",
-      postOrder: "",
+      postInfo: {
+        replyTo: "",
+        threadId: "",
+        post: "",
+        imagepost: "",
+        postOrder: "",
       }
     }
   },
   methods: {
-    async addLastPost(){
-    console.log("adding last post")
-    let postColRef = collection(db, `${this.forumId}/post`);
-    let ss = await getCountFromServer(postColRef);
-    this.postInfo.postOrder = ss.data().count+1;
-    console.log(this.postInfo.postOrder)
-    const lastColRef = doc(db, this.forumId)
-    await setDoc(lastColRef,this.postInfo, {merge: true});
-    console.log("lastPost created");
-    this.$router.push("/");
+    async addLastPost() {
+      console.log("adding last post")
+      let postColRef = collection(db, `${this.forumId}/post`);
+      let ss = await getCountFromServer(postColRef);
+      this.postInfo.postOrder = ss.data().count + 1;
+      console.log(this.postInfo.postOrder)
+      const lastColRef = doc(db, this.forumId)
+      await setDoc(lastColRef, this.postInfo, { merge: true });
+      console.log("lastPost created");
+      this.$router.push("/");
     },
     async createPost() {
-      this.postInfo.imagepost=this.image;
-      if (this.image==null){
-        this.postInfo.imagepost=""
+      this.postInfo.imagepost = this.image;
+      if (this.image == null) {
+        this.postInfo.imagepost = ""
       }
-      this.postInfo.postOrder= serverTimestamp();
+      this.postInfo.postOrder = serverTimestamp();
       this.addLastPost();
       let postColRef = collection(db, `${this.forumId}/post`);
       console.log("creating post...");
-      await addDoc(postColRef,this.postInfo);
+      await addDoc(postColRef, this.postInfo);
       alert("post added");
       this.$router.push("/");
     },
@@ -71,7 +82,7 @@ export default {
       this.createImage(files[0]);
       console.log(this.image)
     },
-      createImage(file) {
+    createImage(file) {
       var image = new Image();
       var reader = new FileReader();
       var vm = this;

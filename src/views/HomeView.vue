@@ -1,50 +1,58 @@
 <template>
-  <div class="home">
-    <br/>
-    <h1>/vue/ vueJS based forum site</h1>
+  <div class="home" style="margin-top:10px;">
+    <br />
+    <h1 class="title is-1"
+      style="text-align:center; font-family: 'Covered By Your Grace', cursive; color:#1C98F7; font-size:70px">Ghibahin
+    </h1>
   </div>
-   <input type="text" v-model="search" name="search" placeholder="search thread">
-   <div class="col-sm-2">
-   </div>
-  <div class="row">
-    <div class="card">
-      <div class="card-body" v-for="forum in filteredItems" :key="forum.id">
-        <div>
-        <img :src="forum.imageThread" onerror="this.style.display='none'"/>
-        </div>
-        #{{ forum.id}}
-        <h5 class="card-title">{{ forum.Title }}</h5>
-        <p class="card-text">{{ forum.Description }}
-        </p>
-        <router-link href="#" class="btn btn-primary" :to="{path:`/thread/${forum.id}`}">view thread</router-link>
-        <br />
-        last reply:
-        <br />
-        <div>
-        <img :src="forum.imagepost" onerror="this.style.display='none'"/>
-        </div>
-        <br/>
-        {{forum.post}}
-        <br/>
-        <h6>reply amount: {{forum.postOrder}}</h6>
-        ----------------------------------------------------------------
+
+  <div class="columns is-centered" style="margin-top:40px; margin-bottom:30px">
+    <input class="input is-rounded" style="width:500px" type="text" v-model="search" name="search"
+      placeholder="search thread...">
+  </div>
+
+  <div class="box" style="position:absolute; left:300px">
+    <div class="card" style="width:1000px; display:flex; margin-bottom:50px" v-for="forum in filteredItems"
+      :key="forum.id">
+      <div class="card-image is-rounded" style="align-items:center">
+        <img :src="forum.imageThread" onerror="this.style.display='none'"
+          style="width:400px;height:400px; object-fit: cover" />
       </div>
+
+      <div class="card-content">
+        <h5>#{{ forum.id }}</h5>
+        <h5 class="title is-3">{{ forum.Title }}</h5>
+        <div class="content">
+          <p class="subtitle is-5">{{ forum.Description }}</p>
+        </div>
+
+        <div style="position:absolute;top:300px">
+          <h5>reply amount: {{ forum.postOrder }}</h5>
+          <router-link href="#" class="button is-info" :to="{ path: `/thread/${forum.id}` }">view thread</router-link>
+        </div>
+      </div>
+      <div style="position:absolute; left:800px; top:20px">
+        <h5>Last Reply:</h5>
+        <br />
+        <div class="box" style="max-width:180px">
+          <img :src="forum.imagepost" onerror="this.style.display='none'" class="image is-128x128"
+            style="object-fit:cover; margin-bottom:10px;" />
+
+          <h2> {{ forum.post }}</h2>
+        </div>
+
+
+      </div>
+
     </div>
+
+    
   </div>
 </template>
 
 <style>
-.card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card img {
-  height: 200px;
-  width: 200px;
-  object-fit: cover;
-}
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap');
 </style>
 
 <script>
@@ -57,7 +65,7 @@ export default {
   },
   data() {
     return {
-      threadCount:"",
+      threadCount: "",
       forums: [],
       posts: [],
       lastPost: [],
@@ -68,8 +76,8 @@ export default {
     }
   },
   methods: {
-    newSortForum(){
-      this.forums=this.forums.reverse;
+    newSortForum() {
+      this.forums = this.forums.reverse;
     },
     async fetchData() {
       let dataSS = await getDocs(query(forColRef, orderBy('createdOrder'), limitToLast(5)));
@@ -81,19 +89,8 @@ export default {
       });
       this.forums = forums
     },
-    async deleteForum(forumID) {
-      let forumRef = doc(forColRef, forumID);
-      await deleteDoc(forumRef);
-      this.$router.go();
-    },
-    async autoThreadDeletion(){
-      let docref = forColRef;
-      let ss = await getCountFromServer(docref);
-      this.threadCount = ss.data().count;
-
-    },
-    neutralize(){
-      if(this.forums.imagepost==null){
+    neutralize() {
+      if (this.forums.imagepost == null) {
         this.forums.imagepost = ""
       }
     }
@@ -106,9 +103,9 @@ export default {
     console.log(this.forums);
   },
   computed: {
-    filteredItems(){
+    filteredItems() {
       return this.forums.filter((item) => {
-          return item.Title.match(this.search)
+        return item.Title.match(this.search)
       })
     }
   }

@@ -1,31 +1,26 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/catalog">Catalog</router-link> |
-    <router-link to="/addForum">Add Thread</router-link>
+  <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <router-link to="/" class="navbar-item" style="margin-left: 20px; text-decoration:none; color:inherit;">
+        <img src="./assets/logos.png">
+        <h4 style="margin-left:10px">Ghibahin</h4>
+      </router-link>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu" style="margin-right: 20px;">
+      <div class="navbar-end">
+        <router-link to="/catalog" class="navbar-item" style="text-decoration:none; color:inherit;">
+          Catalog
+        </router-link>
+        <router-link to="/addForum" class="navbar-item" style="text-decoration:none; color:inherit;">
+          Add Thread
+        </router-link>
+      </div>
+    </div>
   </nav>
-  <router-view/>
+  <router-view />
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 </style>

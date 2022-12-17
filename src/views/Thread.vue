@@ -57,55 +57,8 @@
     </div>
 
   </div>
-
-
-  <!-- <router-link type="submit" class="btn btn-primary" :to="{path: `/thread/newpost/${this.forumId}`}">new post</router-link>
-  <div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        #{{forumId}}
-        <h5 class="card-title">{{forumInfo.Title}}</h5>
-        <div><img :src="forumInfo.imageThread" onerror="this.style.display='none'"/></div>
-        <p class="card-text">{{forumInfo.Description}}</p>
-      </div>
-    </div>
-  </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card"> 
-        <div class="card-body" v-for="post in posts" :key="post.id">
-          #{{ post.id }}
-          <br/>
-          reply to : {{post.replyTo}}
-          <br/>
-          <div>
-        <img :src="post.imagepost" onerror="this.style.display='none'"/>
-        </div>
-          <h3>{{ post.post }}</h3>
-          <br/>
-          <router-link type="submit" class="btn btn-success" :to="{path: `/thread/replyPost/${post.id}`}">reply</router-link>
-          <br/>
-          --------------------------------------------------------------
-        </div>
-      </div>
-  </div>
-  </div> -->
 </template>
-<!-- <style>
-.card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.card img {
-  height: 300px;
-  width: 300px;
-  object-fit: cover;
-}
-</style> -->
 
 <script>
 // @ is an alias to /src

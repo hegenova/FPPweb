@@ -1,10 +1,65 @@
 <template>
-  <div class="home">
-    <br/>
-    <h1>/vue/ vueJS based forum site</h1>
+  <div class="home" style="margin-top:10px;">
+    <br />
+    <h1 class="title is-1"
+      style="text-align:center; font-family: 'Covered By Your Grace', cursive; color:#1C98F7; font-size:70px">Thread
+    </h1>
   </div>
-  <br/>
-  <router-link type="submit" class="btn btn-primary" :to="{path: `/thread/newpost/${this.forumId}`}">new post</router-link>
+
+  <br />
+
+  <div class="box" style="position:absolute; left:300px;">
+    <div class="card" style="width:1000px; display:flex; margin-bottom:50px">
+      <div class="card-image is-rounded" style="align-items:center">
+        <img :src="forumInfo.imageThread" onerror="this.style.display='none'"
+          style="width:400px;height:400px; object-fit: cover" />
+      </div>
+
+      <div class="card-content">
+        <h5>#{{ forumId }}</h5>
+        <h5 class="title is-3">{{ forumInfo.Title }}</h5>
+        <div class="content">
+          <p class="subtitle is-5">{{ forumInfo.Description }}</p>
+        </div>
+
+        <div style="position:absolute;top:300px">
+          <router-link type="submit" class="button is-info" :to="{ path: `/thread/newpost/${this.forumId}` }">New
+            Post</router-link>
+        </div>
+      </div>
+    </div>
+
+    <div class="All Post" style="margin-top:10px;">
+      <br />
+      <h2 class="title is-1"
+        style="text-align:center; font-family: 'Covered By Your Grace', cursive; color:#1C98F7; font-size:40px; margin-bottom:20px">All Post
+        :</h2>
+    </div>
+
+    <div class="card" style="display:flex; margin-bottom:20px" v-for="post in posts" :key="post.id">
+      <div class="card-image is-rounded">
+        <img :src="post.imagepost" onerror="this.style.display='none'" style="width:200px;height:200px; object-fit: cover"/>
+      </div>
+      <div class="card-content">
+        <div class="reply" style="margin-bottom:20px; ">
+          #{{ post.id }}
+          <br/>
+          <div style="color:#1C98F7">
+             {{post.replyTo}}
+          </div>
+        </div>
+        <h2 class="subtitle is-4">{{ post.post }}</h2>
+        <br/>
+        <div style="position:absolute;top:150px">
+          <router-link type="submit" class="button is-info" :to="{path: `/thread/replyPost/${post.id}`}">reply</router-link>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- <router-link type="submit" class="btn btn-primary" :to="{path: `/thread/newpost/${this.forumId}`}">new post</router-link>
   <div class="row">
   <div class="col-sm-6">
     <div class="card">
@@ -23,12 +78,12 @@
         <div class="card-body" v-for="post in posts" :key="post.id">
           #{{ post.id }}
           <br/>
-          {{post.replyTo}}
+          reply to : {{post.replyTo}}
           <br/>
           <div>
         <img :src="post.imagepost" onerror="this.style.display='none'"/>
         </div>
-          {{ post.post }}
+          <h3>{{ post.post }}</h3>
           <br/>
           <router-link type="submit" class="btn btn-success" :to="{path: `/thread/replyPost/${post.id}`}">reply</router-link>
           <br/>
@@ -36,9 +91,9 @@
         </div>
       </div>
   </div>
-  </div>
+  </div> -->
 </template>
-<style>
+<!-- <style>
 .card {
   display: flex;
   align-items: center;
@@ -46,11 +101,11 @@
 }
 
 .card img {
-  height: 200px;
-  width: 200px;
+  height: 300px;
+  width: 300px;
   object-fit: cover;
 }
-</style>
+</style> -->
 
 <script>
 // @ is an alias to /src
@@ -88,11 +143,6 @@ export default {
       this.forumInfo.Title = forumData.Title;
       this.forumInfo.Description = forumData.Description;
       this.forumInfo.imageThread = forumData.imageThread;
-    },
-    async deleteForum(forumID) {
-      let forumRef = doc(forColRef, forumID);
-      await deleteDoc(forumRef);
-      this.$router.go();
     },
     async fetchPost() {
       const postColRef = collection(db, `${this.forumId}/post`);

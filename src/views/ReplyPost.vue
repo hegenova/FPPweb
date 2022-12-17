@@ -1,23 +1,38 @@
 <template>
-  <div class="home">
-    <br/>
-    <h1>/vue/ vueJS based forum site</h1>
+  <div class="newPost" style="margin-top:10px;margin-bottom:20px">
+    <br />
+    <h1 class="title is-1"
+      style="text-align:center; font-family: 'Covered By Your Grace', cursive; color:#1C98F7; font-size:70px">Reply Post
+    </h1>
   </div>
-  <form @submit.prevent="createReplyPost">
-      <div class="form-group">
-    <label for="formGroupExampleInput2">Reply to:  </label>
-    <input type="text" class="form-control" v-model="postId" placeholder="post ID">
-  </div>
-  <div class="form-group">
-    <label for="formGroupExampleInput2">Post</label>
-    <input type="text" class="form-control" v-model="postInfo.post" placeholder="post">
-  </div>
-  <div class="mb-3">
-  <label for="formFile" class="form-label">Image</label>
-  <input class="form-control" type="file" @change="onFileChange">
-</div>
-  <button type="submit" class="btn btn-primary">Submit new post</button>
-</form>
+
+  <form class="box" @submit.prevent="createReplyPost" style="width:1000px;position:absolute; left:350px">
+    <div class="field">
+      <label class="label">Reply To:</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Post ID" v-model="postId" disabled>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Post</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Post" v-model="postInfo.post">
+      </div>
+    </div>
+
+    <div class="field">
+      <label  class="label">Image</label>
+      <div class="file">
+        <label for="formFile"  class="file-label">
+          <input class="input" type="file" id="formFile" @change="onFileChange">
+        </label>
+      </div>
+    </div>
+  
+    <button class="button is-primary" style="margin-top:10px;">Submit New Post</button>
+  </form>
+  
 </template>
 
 <script>
@@ -82,11 +97,6 @@ export default {
       const addedDoc = await addDoc(postColRef,this.postInfo);
       alert("post added");
       this.$router.push("/");
-    },
-    async deleteForum(forumID) {
-      let forumRef = doc(forColRef, forumID);
-      await deleteDoc(forumRef);
-      this.$router.go();
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;

@@ -8,9 +8,9 @@
 
 
   
-  <button @click="reverseOrder" class="button is-primary">reverse the order</button>
-  <div class="columns is-centered" style="margin-top:40px; margin-bottom:30px">
-    <input class="input is-rounded" style="width:500px" type="text" v-model="search" name="search"
+  <button @click="reverseOrder" id="reverse" class="button is-primary">reverse the order</button>
+  <div class="columns is-centered" id="search1" style="margin-top:40px; margin-bottom:30px">
+    <input class="input is-rounded" id="search2" style="width:500px" type="text" v-model="search" name="search"
       placeholder="search thread...">
   </div>
   <div class="box" style="position:absolute; left:300px; ">
@@ -19,19 +19,20 @@
       :key="forum.id">
       <div class="card-image is-rounded" style="align-items:center">
         <img :src="forum.imageThread" onerror="this.style.display='none'"
-          style="width:400px;height:400px; object-fit: cover" />
+          style="width:400px;height:400px; object-fit: cover"  />
       </div>
 
       <div class="card-content">
-        <h5>#{{ forum.id }}</h5>
-        <h5 class="title is-3">{{ forum.Title }}</h5>
+        <h5>#{{ forum.id }} </h5>
+        <h5 class="title is-3" id="title">{{ forum.Title }}</h5>
         <div class="content">
-          <p class="subtitle is-5">{{ forum.Description }}</p>
+          <p class="subtitle is-5" id="desc">{{ forum.Description }}</p>
         </div>
 
         <div style="position:absolute;top:300px">
           <h5>reply amount: {{ forum.postOrder }}</h5>
-          <router-link href="#" class="button is-info" :to="{ path: `/thread/${forum.id}` }">view thread</router-link>
+          <p>at {{forum.createdOrder}}</p>
+          <router-link href="#" id="viewthread" class="button is-info" :to="{ path: `/thread/${forum.id}` }">view thread</router-link>
         </div>
       </div>
       <div style="position:absolute; left:800px; top:20px">
@@ -56,12 +57,36 @@
 <style>
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap');
-
-
+.darkmode--activated .box, .darkmode--activated .card, .darkmode--activated .card-content, .darkmode--acivated .content{
+    background-color:black;
+    color:white;
+}
+.darkmode--activated #title{
+  color:white
+}
+.darkmode--activated #desc{
+  color:white
+}
+.darkmode--activated #viewthread, .darkmode--acivated #logohome{
+  background-color:rgb(227, 103, 8);
+}
+.darkmode--activated #search2{
+  background-color:rgb(227, 103, 8);;
+  border-color: black;
+}
+.darkmode--activated ::placeholder{
+  color:white;
+}
+.darkmode--activated #reverse{
+  background-color:rgb(219, 63, 63)
+}
+/* .darkmode-layer, .darkmode-toggle {
+} */
 </style>
 
 <script>
 // @ is an alias to /src
+import moment from "moment";
 import Darkmode from 'darkmode-js';
 import FetchForum from "../services/FetchForum";
 import forColRef from "../firebase";
@@ -98,6 +123,8 @@ export default {
       let forums = [];
       dataSS.forEach((forum) => {
         let forumData = forum.data();
+        let date= forumData.createdOrder.toDate();
+        forumData.createdOrder = moment(date).fromNow();
         forumData.id = forum.id;
         forums.push(forumData);
       });
@@ -114,6 +141,7 @@ export default {
     // async load(){
     //   const response = await FetchForum.fetch();
     //   this.response = response.data.message;
+    //   console.log("hey")
     //   this.forums = response.data.data;
     // }
   },
@@ -121,7 +149,8 @@ export default {
   //   this.load()
   // },
   created() {
-    //this.darkmode = new Darkmode();  
+    new Darkmode().showWidget();
+
     this.fetchData();
     this.neutralize();
     console.log(this.forums);

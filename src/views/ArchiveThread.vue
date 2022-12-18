@@ -17,9 +17,9 @@
 
       <div class="card-content">
         <h5>#{{ forumId }}</h5>
-        <h5 class="title is-3">{{ forumInfo.Title }}</h5>
+        <h5 class="title is-3" id="title">{{ forumInfo.Title }}</h5>
         <div class="content">
-          <p class="subtitle is-5">{{ forumInfo.Description }}</p>
+          <p class="subtitle is-5" id='desc'>{{ forumInfo.Description }}</p>
         </div>
 
       </div>
@@ -44,7 +44,7 @@
              <router-link :to="{path: `/archived/${forumId}/${post.replyTo}`}">{{post.replyTo}}</router-link>
              </div>
         </div>
-        <h2 class="subtitle is-4">{{ post.post }}</h2>
+        <h2 class="subtitle is-4" id="post">{{ post.post }}</h2>
 
         <div style="margin-top:70px;">
           <p>created: {{post.postOrder}}</p>
@@ -59,6 +59,7 @@
 <script>
 // @ is an alias to /src
 import moment from "moment";
+import Darkmode from 'darkmode-js';
 import forColRef from "../firebase";
 import { getDoc, getDocs, doc, setDoc, query, orderBy } from "firebase/firestore";
 import { getFirestore, collection } from "firebase/firestore";
@@ -108,6 +109,7 @@ export default {
     },
   },
   created() {
+    new Darkmode().showWidget();
     let forumId = this.$route.params.forumId
     let id;
     this.forumId = forumId;

@@ -16,7 +16,7 @@
     <div class="field">
       <label class="label">Post</label>
       <div class="control">
-        <input class="input" type="text" placeholder="Post" v-model="postInfo.post">
+        <input class="input" id="input3" type="text" placeholder="Post" v-model="postInfo.post">
       </div>
     </div>
 
@@ -24,7 +24,7 @@
       <label  class="label">Image</label>
       <div class="file">
         <label for="formFile"  class="file-label">
-          <input class="input" type="file" id="formFile" @change="onFileChange">
+          <input class="input" type="file" id="input2" @change="onFileChange">
         </label>
         <div v-if="image" style=" width:400px;height:400px; object-fit: cover">
         <img :src="image"/>
@@ -32,13 +32,14 @@
       </div>
     </div>
   
-    <button class="button is-primary" style="margin-top:10px;">Submit New Post</button>
+    <button class="button is-primary" id="input" style="margin-top:10px;">Submit New Post</button>
   </form>
   
 </template>
 
 <script>
 // @ is an alias to /src
+import Darkmode from 'darkmode-js'
 import forColRef from "../firebase";
 import { getDocs, getDoc, setDoc, serverTimestamp, getCountFromServer, addDoc, doc, deleteDoc } from "firebase/firestore";
 import { collection } from "firebase/firestore";
@@ -139,6 +140,7 @@ export default {
     },
   },
   created() {
+    new Darkmode().showWidget();
     this.getThreadId();
     let postId = this.$route.params.postId;
     this.postId = postId;

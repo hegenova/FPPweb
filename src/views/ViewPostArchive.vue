@@ -31,7 +31,7 @@
              <router-link :to="{path: `/thread/${forumId}/${postInfo.replyTo}`}" @click="refreshOnReply">{{postInfo.replyTo}}</router-link>
              </div>
         </div>
-        <h2 class="subtitle is-4">{{ postInfo.post }}</h2>
+        <h2 class="subtitle is-4" id="post">{{ postInfo.post }}</h2>
         <br/>
       </div>
     </div>
@@ -41,6 +41,7 @@
 
 <script>
 // @ is an alias to /src
+import Darkmode from 'darkmode-js'
 import forColRef from "../firebase";
 import { getDoc, getDocs, doc, setDoc, query, orderBy } from "firebase/firestore";
 import { getFirestore, collection } from "firebase/firestore";
@@ -109,6 +110,7 @@ export default {
     },
   },
   created() {
+      new Darkmode().showWidget();
     let forumId = this.$route.params.forumId
     this.forumId = forumId
     let postId = this.$route.params.postId

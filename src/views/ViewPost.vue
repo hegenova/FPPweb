@@ -30,20 +30,46 @@
              <router-link :to="{path: `/thread/${forumId}/${postInfo.replyTo}`}" @click="refreshOnReply">{{postInfo.replyTo}}</router-link>
              </div>
         </div>
-        <h2 class="subtitle is-4">{{ postInfo.post }}</h2>
+        <h2 class="subtitle is-4" id="post">{{ postInfo.post }}</h2>
         <br/>
         <div style="position:absolute;top:150px">
-          <router-link type="submit" class="button is-info" :to="{path: `/thread/replyPost/${postId}`}">reply</router-link>
+          <router-link type="submit" id="input" class="button is-info" :to="{path: `/thread/replyPost/${postId}`}">reply</router-link>
         </div>
       </div>
     </div>
 
   </div>
 </template>
+<style>
+.darkmode--activated .box, .darkmode--activated .card, .darkmode--activated .card-content, .darkmode--activated .content, .darkmode--activated .label{
+    background-color:black;
+    color:white;
+}
+.darkmode--activated #title, .darkmode--activated #post{
+  color:white
+}
+.darkmode--activated #desc{
+  color:white
+}
+.darkmode--activated #viewthread{
+  background-color:rgb(227, 103, 8);
+}
+.darkmode--activated #search2, .darkmode--activated #input, .darkmode--activated #input2, .darkmode--activated #input3{
+  background-color:rgb(227, 103, 8);;
+  border-color: black;
+}
+.darkmode--activated ::placeholder{
+  color:black;
+}
+.darkmode--activated #reverse, .darkmode--activated #submit{
+  background-color:rgb(219, 63, 63)
+}
+</style>
 
 <script>
 // @ is an alias to /src
 import forColRef from "../firebase";
+import Darkmode from 'darkmode-js';
 import { getDoc, getDocs, doc, setDoc, query, orderBy } from "firebase/firestore";
 import { getFirestore, collection } from "firebase/firestore";
 import db from "../firebase";
@@ -111,6 +137,7 @@ export default {
     },
   },
   created() {
+      new Darkmode().showWidget();
     let forumId = this.$route.params.forumId
     this.forumId = forumId
     let postId = this.$route.params.postId

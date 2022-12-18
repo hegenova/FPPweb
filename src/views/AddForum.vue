@@ -11,14 +11,14 @@
     <div class="field">
       <label class="label">Title</label>
       <div class="control">
-        <input class="input" type="text" placeholder="Title" v-model="dataInfo.Title">
+        <input class="input" id="input" type="text" placeholder="Title" v-model="dataInfo.Title">
       </div>
     </div>
   
     <div class="field">
       <label class="label">Description</label>
       <div class="control">
-        <input class="input" type="text" placeholder="Description Your Thread" v-model="dataInfo.Description">
+        <input class="input" id="input2" type="text" placeholder="Description Your Thread" v-model="dataInfo.Description">
       </div>
     </div>
 
@@ -26,19 +26,44 @@
       <label  class="label">Image</label>
       <div class="file">
         <label for="formFile"  class="file-label">
-          <input class="input" type="file" id="formFile" @change="onFileChange">
+          <input class="input" type="file" id="input3" @change="onFileChange">
         </label>
         <div v-if="image" style=" width:400px;height:400px; object-fit: cover">
         <img :src="image"/>
         </div>
       </div>
     </div>
-    <button class="button is-primary" style="margin-top:10px;">Submit</button>
+    <button class="button is-primary" id="submit" style="margin-top:10px;">Submit</button>
   </form>
 </template>
+<style>
+.darkmode--activated .box, .darkmode--activated .card, .darkmode--activated .card-content, .darkmode--activated .content, .darkmode--activated .label{
+    background-color:black;
+    color:white;
+}
+.darkmode--activated #title{
+  color:white
+}
+.darkmode--activated #desc{
+  color:white
+}
+.darkmode--activated #viewthread{
+  background-color:rgb(227, 103, 8);
+}
+.darkmode--activated #search2, .darkmode--activated #input, .darkmode--activated #input2, .darkmode--activated #input3{
+  background-color:rgb(227, 103, 8);;
+  border-color: black;
+}
+.darkmode--activated ::placeholder{
+  color:black;
+}
+.darkmode--activated #reverse, .darkmode--activated #submit{
+  background-color:rgb(219, 63, 63)
+}</style>>
 
 <script>
 // @ is an alias to /src
+import Darkmode from 'darkmode-js';
 import forColRef from "../firebase";
 import { addDoc, serverTimestamp, getDoc, setDoc, doc, getCountFromServer, deleteDoc, collection } from "firebase/firestore";
 import db from "../firebase";
@@ -98,6 +123,7 @@ export default {
   },
   created() {
     // this.getCreatedOrder();
+    new Darkmode().showWidget();
   }
 }
 </script>

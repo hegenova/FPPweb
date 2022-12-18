@@ -6,7 +6,7 @@
     </h1>
   </div>
 
-<button @click="reverseOrder" class="button is-primary">reverse the order</button>
+<button @click="reverseOrder" id="reverse" class="button is-primary">reverse the order</button>
 
   <br />
 
@@ -19,13 +19,13 @@
 
       <div class="card-content">
         <h5>#{{ forumId }}</h5>
-        <h5 class="title is-3">{{ forumInfo.Title }}</h5>
+        <h5 class="title is-3" id="title">{{ forumInfo.Title }}</h5>
         <div class="content">
-          <p class="subtitle is-5">{{ forumInfo.Description }}</p>
+          <p class="subtitle is-5" id="desc">{{ forumInfo.Description }}</p>
         </div>
 
         <div style="position:absolute;top:300px">
-          <router-link type="submit" class="button is-info" :to="{ path: `/thread/newpost/${this.forumId}` }">New
+          <router-link type="submit" id="input3" class="button is-info" :to="{ path: `/thread/newpost/${this.forumId}` }">New
             Post</router-link>
         </div>
       </div>
@@ -50,19 +50,49 @@
              <router-link :to="{path: `/thread/${forumId}/${post.replyTo}`}">{{post.replyTo}}</router-link>
              </div>
         </div>
-        <h2 class="subtitle is-4">{{ post.post }}</h2>
+        <h2 class="subtitle is-4" id="post">{{ post.post }}</h2>
+        <br/>
+        <div style="margin-top:50px">
+        <p>created: {{post.postOrder}}</p>
+        </div>
         <br/>
         <div style="position:absolute;top:150px">
-          <router-link type="submit" class="button is-info" :to="{path: `/thread/replyPost/${post.id}`}">reply</router-link>
+          <router-link type="submit" class="button is-info" id="input2" :to="{path: `/thread/replyPost/${post.id}`}">reply</router-link>
         </div>
       </div>
     </div>
 
   </div>
 </template>
+<style>
+.darkmode--activated .box, .darkmode--activated .card, .darkmode--activated .card-content, .darkmode--activated .content, .darkmode--activated .label{
+    background-color:black;
+    color:white;
+}
+.darkmode--activated #title, .darkmode--activated #post{
+  color:white
+}
+.darkmode--activated #desc{
+  color:white
+}
+.darkmode--activated #viewthread, .darkmode--activated #navbar, .darkmode--activated #navbar2, .darkmode--activated .nav{
+  background-color:rgb(227, 103, 8);
+}
+.darkmode--activated #search2, .darkmode--activated #input, .darkmode--activated #input2, .darkmode--activated #input3{
+  background-color:rgb(227, 103, 8);;
+  border-color: black;
+}
+.darkmode--activated ::placeholder{
+  color:black;
+}
+.darkmode--activated #reverse, .darkmode--activated #submit{
+  background-color:rgb(219, 63, 63)
+}
+</style>
 
 <script>
 // @ is an alias to /src
+import Darkmode from 'darkmode-js';
 import moment from "moment";
 import forColRef from "../firebase";
 import { getDoc, getDocs, doc, setDoc, query, orderBy } from "firebase/firestore";
@@ -120,6 +150,7 @@ export default {
     },
   },
   created() {
+    new Darkmode().showWidget();
     let forumId = this.$route.params.forumId
     let id;
     this.forumId = forumId;

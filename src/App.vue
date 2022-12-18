@@ -2,7 +2,7 @@
   <nav class="navbar is-info" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link to="/" class="navbar-item" style="margin-left: 20px; text-decoration:none; color:inherit;">
-        <img src="./assets/logos.png">
+        <img src="./assets/logohome.png">
         <h4 style="margin-left:10px">Ghibahin</h4>
       </router-link>
     </div>
@@ -14,6 +14,9 @@
         </router-link>
         <router-link to="/addForum" class="navbar-item" style="text-decoration:none; color:inherit;">
           Add Thread
+        </router-link>
+        <router-link to="/archive" class="navbar-item" style="text-decoration:none; color:inherit;">
+          Archive
         </router-link>
       </div>
     </div>

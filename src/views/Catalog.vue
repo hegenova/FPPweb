@@ -4,6 +4,8 @@
     <h1 class="title is-1" style="text-align:center; font-family: 'Covered By Your Grace', cursive; color:#1C98F7; font-size:70px">CATALOG</h1>
   </div>
 
+    <button @click="reverseOrder" class="button is-primary">reverse the order</button>
+
   <div class="columns is-centered" style="margin-top:40px; margin-bottom:30px">
     <input class="input is-rounded" style="width:500px" type="text" v-model="search" name="search"
       placeholder="search thread...">
@@ -31,11 +33,10 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap');
 </style>
-
 <script>
 // @ is an alias to /src
 import forColRef from "../firebase";
-import { getDocs, doc, deleteDoc, query, orderBy } from "firebase/firestore";
+import { getDocs, doc, deleteDoc, limitToLast,query, orderBy } from "firebase/firestore";
 
 export default {
   name: 'HomeView',
@@ -46,12 +47,14 @@ export default {
       forums: [],
       selectedDoc: null,
       search: "",
-      adminMode: false,
     }
   },
   methods: {
+    reverseOrder(){
+      this.forums = this.forums.reverse();
+    },
     async fetchData() {
-      let dataSS = await getDocs(query(forColRef, orderBy('createdOrder')));
+      let dataSS = await getDocs(query(forColRef, orderBy('createdOrder'), limitToLast(25)));
       let forums = [];
       dataSS.forEach((forum) => {
         let forumData = forum.data();
@@ -60,19 +63,14 @@ export default {
       });
       this.forums = forums
     },
-    async deleteForum(forumID) {
-      let forumRef = doc(forColRef, forumID);
-      await deleteDoc(forumRef);
-      this.$router.go();
-    }
   },
   created() {
     this.fetchData();
   },
-  computed: {
-    filteredItems() {
+  computed: { 
+    filteredItems(){
       return this.forums.filter((item) => {
-        return item.Title.match(this.search)
+          return item.Title.match(this.search) || item.Description.match(this.search) || item.id.match(this.search)
       })
     }
   }

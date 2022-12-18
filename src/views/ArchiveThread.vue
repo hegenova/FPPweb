@@ -5,8 +5,7 @@
       style="text-align:center; font-family: 'Covered By Your Grace', cursive; color:#1C98F7; font-size:70px">Thread
     </h1>
   </div>
-
-
+<h1 style="text-align:center; font-family: 'Verdana'; color:red"> <b>THREAD ARCHIVED</b></h1>
   <br />
 
   <div class="box" style="position:absolute; left:300px;">
@@ -23,10 +22,6 @@
           <p class="subtitle is-5">{{ forumInfo.Description }}</p>
         </div>
 
-        <div style="position:absolute;top:300px">
-          <router-link type="submit" class="button is-info" :to="{ path: `/thread/newpost/${this.forumId}` }">New
-            Post</router-link>
-        </div>
       </div>
     </div>
 
@@ -46,14 +41,11 @@
           #{{ post.id }}
           <br/>
           <div style="color:#1C98F7">
-             <router-link :to="{path: `/thread/${forumId}/${post.replyTo}`}">{{post.replyTo}}</router-link>
+             <router-link :to="{path: `/archived/${forumId}/${post.replyTo}`}">{{post.replyTo}}</router-link>
              </div>
         </div>
         <h2 class="subtitle is-4">{{ post.post }}</h2>
         <br/>
-        <div style="position:absolute;top:150px">
-          <router-link type="submit" class="button is-info" :to="{path: `/thread/replyPost/${post.id}`}">reply</router-link>
-        </div>
       </div>
     </div>
 
@@ -72,7 +64,6 @@ export default {
   },
   data() {
     return {
-      test: 5,
       forums: [],
       selectedDoc: {},
       docRef: {},
@@ -88,9 +79,6 @@ export default {
     }
   },
   methods: {
-    savePostId(postId){
-      localStorage.setItem("postId", postId);
-    },
     async getForum() {
       let forRef = doc(forColRef, this.forumId);
       this.docRef = forRef;
@@ -116,7 +104,9 @@ export default {
     let forumId = this.$route.params.forumId
     let id;
     this.forumId = forumId;
+    console.log(this.forumId);
     localStorage.setItem("id", forumId);
+    console.log(localStorage.getItem(id));
     this.getForum();
     this.fetchPost();
   }

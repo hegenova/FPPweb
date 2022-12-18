@@ -51,8 +51,6 @@ export default {
       forums: [],
       image: null,
       forumId: null,
-      selectedDoc: null,
-      replyPostid: null,
       search: "",
       postInfo: {
         post: "",
@@ -61,7 +59,6 @@ export default {
         threadId: "",
         postOrder: "",
       },
-      adminMode: false,
     }
   },
   methods: {

@@ -1,4 +1,5 @@
 <template>
+<body>
   <div class="home" style="margin-top:10px;">
     <br />
     <h1 class="title is-1"
@@ -6,6 +7,9 @@
     </h1>
   </div>
 
+
+
+  <button @click="reverseOrder" class="button is-primary">reverse the order</button>
   <div class="columns is-centered" style="margin-top:40px; margin-bottom:30px">
     <input class="input is-rounded" style="width:500px" type="text" v-model="search" name="search"
       placeholder="search thread...">
@@ -32,7 +36,7 @@
         </div>
       </div>
       <div style="position:absolute; left:800px; top:20px">
-        <h5>Last Reply:</h5>
+        <h5>Last Reply: </h5>
         <br />
         <div class="box" style="max-width:180px">
           <img :src="forum.imagepost" onerror="this.style.display='none'" class="image is-128x128"
@@ -48,11 +52,19 @@
 
     
   </div>
+  </body>
 </template>
 
 <style>
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap');
+
+card{
+  background-color:white
+}
+.dark-mode {
+  background-color:black
+}
 </style>
 
 <script>
@@ -65,19 +77,24 @@ export default {
   },
   data() {
     return {
-      threadCount: "",
+      reverseButton: "new",
+      unreverseButton: "old",
+      threadCount:"",
       forums: [],
       posts: [],
       lastPost: [],
       numberOfReply: [],
       selectedDoc: null,
       search: "",
-      adminMode: false,
     }
   },
   methods: {
-    newSortForum() {
-      this.forums = this.forums.reverse;
+    darkMode(){
+      var element =  document.body;
+      element.classList.toggle("dark-mode");
+    },
+    reverseOrder(){
+      this.forums = this.forums.reverse();
     },
     async fetchData() {
       let dataSS = await getDocs(query(forColRef, orderBy('createdOrder'), limitToLast(5)));
@@ -89,23 +106,25 @@ export default {
       });
       this.forums = forums
     },
-    neutralize() {
-      if (this.forums.imagepost == null) {
+    neutralize(){
+      if(this.forums.imagepost==null){
         this.forums.imagepost = ""
+      }
+      if (this.forums.imageThread==null){
+        this.forums.imageThread = ""
       }
     }
   },
   created() {
-    const q = query(forColRef, orderBy('createdOrder'))
-    console.log(q)
     this.fetchData();
     this.neutralize();
     console.log(this.forums);
   },
   computed: {
-    filteredItems() {
+    filteredItems(){
       return this.forums.filter((item) => {
-        return item.Title.match(this.search)
+        this.search.toLowerCase();
+          return item.Title.match(this.search) || item.Description.match(this.search) || item.id.match(this.search)
       })
     }
   }

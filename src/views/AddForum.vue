@@ -35,10 +35,8 @@
   </form>
 </template>
 
-
 <script>
 // @ is an alias to /src
-
 import forColRef from "../firebase";
 import { addDoc, serverTimestamp, getDoc, setDoc, doc, getCountFromServer, deleteDoc, collection } from "firebase/firestore";
 import db from "../firebase";
@@ -49,43 +47,42 @@ export default {
   data() {
     return {
       createdOrder: 0,
-      image: null,
+      image: "",
       addedDoc: '',
       threadInfo: {
         orderNow: null,
       },
-      dataInfo: {
-        Title: '',
-        Description: '',
-        imageThread: null,
-        createdOrder: '',
-        replyAmount: null,
-        imageAmount: null,
-        prevThread: null,
-        imagepost: "",
-        bumpOrder: '',
-      }
+      dataInfo: { 
+      Title: '',
+      Description: '',
+      imageThread: '',
+      createdOrder: '',
+      replyAmount: null,
+      imagepost: "",}
     }
   },
   methods: {
     async createForum() {
       console.log("creating forum...");
-      this.dataInfo.imageThread = this.image;
-      this.dataInfo.createdOrder = serverTimestamp();
+      this.dataInfo.imageThread=this.image;
+      if(this.dataInfo.imageThread==null) {
+        this.dataInfo.imageThread=""
+      }
+      this.dataInfo.createdOrder= serverTimestamp();
       const addedDoc = await addDoc(forColRef, this.dataInfo);
       console.log()
-      this.addedDoc = addedDoc.id;
+      this.addedDoc= addedDoc.id;
       alert("forum added");
       this.$router.push("/");
     },
-    onFileChange(e) {
+     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length)
         return;
       this.createImage(files[0]);
       console.log(this.image);
     },
-    createImage(file) {
+      createImage(file) {
       var image = new Image();
       var reader = new FileReader();
       var vm = this;

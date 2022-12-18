@@ -10,49 +10,30 @@
   <br />
 
   <div class="box" style="position:absolute; left:300px;">
-    <div class="card" style="width:1000px; display:flex; margin-bottom:50px">
-      <div class="card-image is-rounded" style="align-items:center">
-        <img :src="forumInfo.imageThread" onerror="this.style.display='none'"
-          style="width:400px;height:400px; object-fit: cover" />
-      </div>
-
-      <div class="card-content">
-        <h5>#{{ forumId }}</h5>
-        <h5 class="title is-3">{{ forumInfo.Title }}</h5>
-        <div class="content">
-          <p class="subtitle is-5">{{ forumInfo.Description }}</p>
-        </div>
-
-        <div style="position:absolute;top:300px">
-          <router-link type="submit" class="button is-info" :to="{ path: `/thread/newpost/${this.forumId}` }">New
-            Post</router-link>
-        </div>
-      </div>
-    </div>
 
     <div class="All Post" style="margin-top:10px;">
       <br />
       <h2 class="title is-1"
-        style="text-align:center; font-family: 'Covered By Your Grace', cursive; color:#1C98F7; font-size:40px; margin-bottom:20px">All Post
+        style="text-align:center; font-family: 'Covered By Your Grace', cursive; color:#1C98F7; font-size:40px; margin-bottom:20px">Replied Post
         :</h2>
     </div>
 
-    <div class="card" style="display:flex; margin-bottom:20px" v-for="post in posts" :key="post.id">
+    <div class="card" style="display:flex; margin-bottom:20px">
       <div class="card-image is-rounded">
-        <img :src="post.imagepost" onerror="this.style.display='none'" style="width:200px;height:200px; object-fit: cover"/>
+        <img :src="postInfo.imagepost" />
       </div>
       <div class="card-content">
         <div class="reply" style="margin-bottom:20px; ">
-          #{{ post.id }}
+          #{{ postInfo.id }}
           <br/>
           <div style="color:#1C98F7">
-             <router-link :to="{path: `/thread/${forumId}/${post.replyTo}`}">{{post.replyTo}}</router-link>
+             <router-link :to="{path: `/thread/${forumId}/${postInfo.replyTo}`}" @click="refreshOnReply">{{postInfo.replyTo}}</router-link>
              </div>
         </div>
-        <h2 class="subtitle is-4">{{ post.post }}</h2>
+        <h2 class="subtitle is-4">{{ postInfo.post }}</h2>
         <br/>
         <div style="position:absolute;top:150px">
-          <router-link type="submit" class="button is-info" :to="{path: `/thread/replyPost/${post.id}`}">reply</router-link>
+          <router-link type="submit" class="button is-info" :to="{path: `/thread/replyPost/${postId}`}">reply</router-link>
         </div>
       </div>
     </div>
@@ -77,20 +58,23 @@ export default {
       selectedDoc: {},
       docRef: {},
       postdocRef: {},
-      forumId: null,
+      postId: null,
+      forumid: null,
       search: "",
-      forumInfo: {
-        Title: "",
-        Description: "",
-        imageThread: null,
+      postInfo:  {
+      replyTo: "",
+      threadId: "",
+      post: "",
+      imagepost: "",
+      postOrder: "",
       },
       posts: [],
     }
   },
   methods: {
-    savePostId(postId){
-      localStorage.setItem("postId", postId);
-    },
+      refreshOnReply(){
+          this.$router.push(`/thread/${this.forumId}/${this.postInfo.replyTo}`)
+      },
     async getForum() {
       let forRef = doc(forColRef, this.forumId);
       this.docRef = forRef;
@@ -111,14 +95,29 @@ export default {
       });
       this.posts = posts
     },
+    async getPost(){
+    const postColRef = collection(db, `${this.forumId}/post`);
+    let postRef = doc(postColRef, this.postId);
+      this.docRef = postRef;
+      let post = await getDoc(this.docRef);
+      let postData = post.data();
+      console.log(postData.imagepost)
+      this.postInfo.id = this.postId;
+      this.postInfo.replyTo = postData.replyTo;
+      this.postInfo.threadId = postData.threadId;
+      this.postInfo.post = postData.post;
+      this.postInfo.imagepost = postData.imagepost;
+      this.postInfo.postOrder = postData.postOrder;
+    },
   },
   created() {
     let forumId = this.$route.params.forumId
-    let id;
-    this.forumId = forumId;
-    localStorage.setItem("id", forumId);
-    this.getForum();
-    this.fetchPost();
+    this.forumId = forumId
+    let postId = this.$route.params.postId
+    this.postId = postId
+    this.postId=postId
+    this.getPost();
+    console.log(this.postInfo.id)
   }
 }
 </script>

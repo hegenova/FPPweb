@@ -41,37 +41,37 @@ export default {
     return {
       forumId: "",
       image: null,
-      postInfo: {
-        replyTo: "",
-        threadId: "",
-        post: "",
-        imagepost: "",
-        postOrder: "",
+      postInfo:  {
+      replyTo: "",
+      threadId: "",
+      post: "",
+      imagepost: "",
+      postOrder: "",
       }
     }
   },
   methods: {
-    async addLastPost() {
-      console.log("adding last post")
-      let postColRef = collection(db, `${this.forumId}/post`);
-      let ss = await getCountFromServer(postColRef);
-      this.postInfo.postOrder = ss.data().count + 1;
-      console.log(this.postInfo.postOrder)
-      const lastColRef = doc(db, this.forumId)
-      await setDoc(lastColRef, this.postInfo, { merge: true });
-      console.log("lastPost created");
-      this.$router.push("/");
+    async addLastPost(){
+    console.log("adding last post")
+    let postColRef = collection(db, `${this.forumId}/post`);
+    let ss = await getCountFromServer(postColRef);
+    this.postInfo.postOrder = ss.data().count+1;
+    console.log(this.postInfo.postOrder)
+    const lastColRef = doc(db, this.forumId)
+    await setDoc(lastColRef,this.postInfo, {merge: true});
+    console.log("lastPost created");
+    this.$router.push("/");
     },
     async createPost() {
-      this.postInfo.imagepost = this.image;
-      if (this.image == null) {
-        this.postInfo.imagepost = ""
+      this.postInfo.imagepost=this.image;
+      if (this.image==null){
+        this.postInfo.imagepost=""
       }
-      this.postInfo.postOrder = serverTimestamp();
+      this.postInfo.postOrder= serverTimestamp();
       this.addLastPost();
       let postColRef = collection(db, `${this.forumId}/post`);
       console.log("creating post...");
-      await addDoc(postColRef, this.postInfo);
+      await addDoc(postColRef,this.postInfo);
       alert("post added");
       this.$router.push("/");
     },
@@ -82,7 +82,7 @@ export default {
       this.createImage(files[0]);
       console.log(this.image)
     },
-    createImage(file) {
+      createImage(file) {
       var image = new Image();
       var reader = new FileReader();
       var vm = this;

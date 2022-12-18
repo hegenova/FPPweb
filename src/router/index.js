@@ -5,6 +5,10 @@ import Thread from '../views/Thread.vue'
 import Catalog from '../views/Catalog.vue'
 import Post from '../views/NewPost.vue'
 import ReplyPost from '../views/ReplyPost.vue'
+import Archive from '../views/Archive.vue'
+import ArchiveThread from '../views/ArchiveThread.vue'
+import ViewPost from '../views/ViewPost.vue'
+import ViewPostArchive from '../views/ViewPostArchive.vue'
 const routes = [
   {
     path: '/',
@@ -35,6 +39,24 @@ const routes = [
     path: '/thread/replyPost/:postId',
     name: 'replypost',
     component: ReplyPost
+  },
+   { path: '/archive',
+    name: 'archive',
+    component: Archive
+  },
+  {
+    path: '/archived/:forumId',
+    name: 'archivedthread',
+    component: ArchiveThread
+  },
+    {path: '/thread/:forumId/:postId',
+    name: 'viewpost',
+    component: ViewPost
+  },
+  {
+    path: '/archived/:forumId/:postId',
+    name: 'viewpostarchived',
+    component: ViewPostArchive
   }
 ]
 

@@ -20,7 +20,7 @@
 
     <div class="card" style="display:flex; margin-bottom:20px">
       <div class="card-image is-rounded">
-        <img :src="postInfo.imagepost" />
+        <img :src="postInfo.imagepost" style=" width:400px;height:400px;" />
       </div>
       <div class="card-content">
         <div class="reply" style="margin-bottom:20px; ">

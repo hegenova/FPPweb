@@ -20,6 +20,9 @@
         <label for="formFile"  class="file-label">
           <input class="input" type="file" id="formFile" @change="onFileChange">
         </label>
+        <div v-if="image" style=" width:400px;height:400px; object-fit: cover">
+        <img :src="image"/>
+        </div>
       </div>
     </div>
   

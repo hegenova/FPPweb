@@ -45,6 +45,10 @@
              </div>
         </div>
         <h2 class="subtitle is-4">{{ post.post }}</h2>
+
+        <div style="margin-top:70px;">
+          <p>created: {{post.postOrder}}</p>
+        </div>
         <br/>
       </div>
     </div>
@@ -54,6 +58,7 @@
 
 <script>
 // @ is an alias to /src
+import moment from "moment";
 import forColRef from "../firebase";
 import { getDoc, getDocs, doc, setDoc, query, orderBy } from "firebase/firestore";
 import { getFirestore, collection } from "firebase/firestore";
@@ -95,6 +100,8 @@ export default {
       dataSS.forEach((post) => {
         let postData = post.data();
         postData.id = post.id;
+        let date= postData.postOrder.toDate();
+        postData.postOrder = moment(date).fromNow();
         posts.push(postData);
       });
       this.posts = posts

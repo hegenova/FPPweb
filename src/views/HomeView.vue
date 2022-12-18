@@ -1,5 +1,4 @@
 <template>
-<body>
   <div class="home" style="margin-top:10px;">
     <br />
     <h1 class="title is-1"
@@ -8,14 +7,14 @@
   </div>
 
 
-
+  
   <button @click="reverseOrder" class="button is-primary">reverse the order</button>
   <div class="columns is-centered" style="margin-top:40px; margin-bottom:30px">
     <input class="input is-rounded" style="width:500px" type="text" v-model="search" name="search"
       placeholder="search thread...">
   </div>
-
-  <div class="box" style="position:absolute; left:300px">
+  <div class="box" style="position:absolute; left:300px; ">
+    <body>
     <div class="card" style="width:1000px; display:flex; margin-bottom:50px" v-for="forum in filteredItems"
       :key="forum.id">
       <div class="card-image is-rounded" style="align-items:center">
@@ -49,26 +48,22 @@
       </div>
 
     </div>
-
+</body>
     
   </div>
-  </body>
 </template>
 
 <style>
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap');
 
-card{
-  background-color:white
-}
-.dark-mode {
-  background-color:black
-}
+
 </style>
 
 <script>
 // @ is an alias to /src
+import Darkmode from 'darkmode-js';
+import FetchForum from "../services/FetchForum";
 import forColRef from "../firebase";
 import { getDocs, getCountFromServer, getDoc, query, orderBy, doc, deleteDoc, limitToLast } from "firebase/firestore";
 export default {
@@ -77,6 +72,7 @@ export default {
   },
   data() {
     return {
+      darkmode: "",
       reverseButton: "new",
       unreverseButton: "old",
       threadCount:"",
@@ -90,7 +86,8 @@ export default {
   },
   methods: {
     darkMode(){
-      var element =  document.body;
+      this.darkmode.toggle();
+      var element = document.body;
       element.classList.toggle("dark-mode");
     },
     reverseOrder(){
@@ -113,9 +110,18 @@ export default {
       if (this.forums.imageThread==null){
         this.forums.imageThread = ""
       }
-    }
+    },
+    // async load(){
+    //   const response = await FetchForum.fetch();
+    //   this.response = response.data.message;
+    //   this.forums = response.data.data;
+    // }
   },
+  // mounted(){
+  //   this.load()
+  // },
   created() {
+    //this.darkmode = new Darkmode();  
     this.fetchData();
     this.neutralize();
     console.log(this.forums);

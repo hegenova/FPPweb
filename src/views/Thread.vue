@@ -6,6 +6,7 @@
     </h1>
   </div>
 
+<button @click="reverseOrder" class="button is-primary">reverse the order</button>
 
   <br />
 
@@ -62,6 +63,7 @@
 
 <script>
 // @ is an alias to /src
+import moment from "moment";
 import forColRef from "../firebase";
 import { getDoc, getDocs, doc, setDoc, query, orderBy } from "firebase/firestore";
 import { getFirestore, collection } from "firebase/firestore";
@@ -88,6 +90,9 @@ export default {
     }
   },
   methods: {
+    reverseOrder(){
+      this.posts = this.posts.reverse();
+    },
     savePostId(postId){
       localStorage.setItem("postId", postId);
     },
@@ -106,6 +111,8 @@ export default {
       let posts = [];
       dataSS.forEach((post) => {
         let postData = post.data();
+        let date= postData.postOrder.toDate();
+        postData.postOrder = moment(date).fromNow();
         postData.id = post.id;
         posts.push(postData);
       });

@@ -8,10 +8,9 @@
 
   <form class="box" @submit.prevent="createReplyPost" style="width:1000px;position:absolute; left:350px">
     <div class="field">
-      <label class="label">Reply To:</label>
-      <div class="control">
-        <input class="input" type="text" placeholder="Post ID" v-model="postId" disabled>
-      </div>
+      <label class="label">Reply To: #{{postId}}</label>
+      <div v-if="getPostInfo.imagepost"><img :src="getPostInfo.imagepost"  style="width:200px;height:200px; object-fit: cover"/></div>
+      <div>{{ getPostInfo.post }}</div>
     </div>
 
     <div class="field">
@@ -27,6 +26,9 @@
         <label for="formFile"  class="file-label">
           <input class="input" type="file" id="formFile" @change="onFileChange">
         </label>
+        <div v-if="image" style=" width:400px;height:400px; object-fit: cover">
+        <img :src="image"/>
+        </div>
       </div>
     </div>
   
@@ -59,6 +61,13 @@ export default {
         threadId: "",
         postOrder: "",
       },
+      getPostInfo: {
+        post: "",
+        imagepost: "",
+        replyTo: "",
+        threadId: "",
+        postOrder: "",
+      }
     }
   },
   methods: {
@@ -76,7 +85,6 @@ export default {
     async getThreadId() {
       console.log("in getthreadId()")
       let forumId = localStorage.getItem("id");
-      console.log(forumId)
       this.forumId = forumId;
       localStorage.clear();
     },
@@ -94,6 +102,22 @@ export default {
       const addedDoc = await addDoc(postColRef,this.postInfo);
       alert("post added");
       this.$router.push("/");
+    },
+    async getPost(){
+    const postColRef = collection(db, `${this.forumId}/post`);
+    //this.postId=this.$route 
+    //console.log(this.forumId)
+    let postRef = doc(postColRef, this.postId);
+      this.docRef = postRef;
+      let post = await getDoc(this.docRef);
+      let postData = post.data();
+      console.log(postData.imagepost)
+      this.getPostInfo.id = this.postId;
+      this.getPostInfo.replyTo = postData.replyTo;
+      this.getPostInfo.threadId = postData.threadId;
+      this.getPostInfo.post = postData.post;
+      this.getPostInfo.imagepost = postData.imagepost;
+      this.getPostInfo.postOrder = postData.postOrder;
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
@@ -118,6 +142,7 @@ export default {
     this.getThreadId();
     let postId = this.$route.params.postId;
     this.postId = postId;
+    this.getPost();
   }
 }
 </script>

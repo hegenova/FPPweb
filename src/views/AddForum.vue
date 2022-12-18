@@ -28,9 +28,11 @@
         <label for="formFile"  class="file-label">
           <input class="input" type="file" id="formFile" @change="onFileChange">
         </label>
+        <div v-if="image" style=" width:400px;height:400px; object-fit: cover">
+        <img :src="image"/>
+        </div>
       </div>
     </div>
-  
     <button class="button is-primary" style="margin-top:10px;">Submit</button>
   </form>
 </template>
@@ -80,7 +82,8 @@ export default {
       if (!files.length)
         return;
       this.createImage(files[0]);
-      console.log(this.image);
+      console.log(this.image)
+      this.dataInfo.imageThread=this.image;
     },
       createImage(file) {
       var image = new Image();
@@ -92,9 +95,6 @@ export default {
       };
       reader.readAsDataURL(file);
     },
-    removeImage: function (e) {
-      this.image = '';
-    }
   },
   created() {
     // this.getCreatedOrder();

@@ -15,6 +15,7 @@
       <th scope="col">ID</th>
       <th scope="col">Title</th>
       <th scope="col">Description</th>
+      <th scope="col">Time</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -23,6 +24,7 @@
       <td>{{forum.id}}</td>
       <td>{{forum.Title}}</td>
       <td>{{forum.Description}}</td>
+      <td>{{forum.createdOrder}}</td>
       <td><router-link href="#" class="btn btn-primary" :to="{ path: `/archived/${forum.id}` }">view</router-link></td>
     </tr>
   </tbody>
@@ -35,6 +37,7 @@
 </style>
 <script>
 // @ is an alias to /src
+import moment from 'moment';
 import forColRef from "../firebase";
 import { getDocs, doc, deleteDoc, query, orderBy } from "firebase/firestore";
 
@@ -59,6 +62,9 @@ export default {
       dataSS.forEach((forum) => {
         let forumData = forum.data();
         forumData.id = forum.id;
+        //console.log(forumData.createdOrder.toDate())
+        let date= forumData.createdOrder.toDate();
+        forumData.createdOrder = moment(date).fromNow();
         forums.push(forumData);
       });
       this.forums = forums

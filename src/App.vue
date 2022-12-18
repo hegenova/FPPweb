@@ -1,13 +1,13 @@
 <template>
-  <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-info" id="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link to="/" class="navbar-item" style="margin-left: 20px; text-decoration:none; color:inherit;">
         <img src="./assets/logohome.png">
-        <h4 style="margin-left:10px">Ghibahin</h4>
+        <h4 style="margin-left:10px" id="logohome">Ghibahin</h4>
       </router-link>
     </div>
 
-    <div id="navbarBasicExample" class="navbar-menu" style="margin-right: 20px;">
+    <div id="navbar2" class="navbar-menu" style="margin-right: 20px;">
       <div class="navbar-end">
         <router-link to="/catalog" class="navbar-item" style="text-decoration:none; color:inherit;">
           Catalog
@@ -26,4 +26,8 @@
 
 <style>
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+
 </style>
+
+<script>
+</script>
